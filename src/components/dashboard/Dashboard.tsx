@@ -35,6 +35,13 @@ const Dashboard: React.FC = () => {
   const campaigns = campaignsData?.campaigns as Campaign[] | undefined;
   const insights = insightsData?.insights as OverviewInsights | undefined;
 
+  const handleRefresh = async () => {
+    await Promise.all([
+        retryCampaigns(),
+        retryInsights(),
+    ]);
+    };
+
   if (campaignsError) {
     return <ErrorState error={campaignsError} onRetry={() => retryCampaigns()} />;
   }
@@ -67,9 +74,19 @@ const Dashboard: React.FC = () => {
             <h1 className="text-3xl font-semibold text-gray-900">Campaign Dashboard</h1>
             <p className="text-sm text-gray-500 mt-1">Monitor and manage your advertising campaigns</p>
           </div>
-          <div className="text-sm text-gray-500">
-            Last updated: {new Date(insights.timestamp).toLocaleTimeString()}
-          </div>
+          <div className="flex items-center gap-3 text-sm text-gray-500">
+            <span>
+                Last updated: {new Date(insights.timestamp).toLocaleTimeString()}
+            </span>
+
+            <button
+                onClick={handleRefresh}
+                className="flex items-center gap-1 text-blue-600 hover:text-blue-800 cursor-pointer"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="lucide lucide-refresh-ccw-icon lucide-refresh-ccw"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></svg> 
+                Refresh
+            </button>
+        </div>
         </div>
         <div className="grid grid-cols-4 gap-4">
           <MetricCard 
