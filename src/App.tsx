@@ -1,7 +1,15 @@
+import { Route, Routes } from "react-router-dom"
+import Dashboard from "./components/dashboard/Dashboard"
+import CampaignDetailPage from "./components/campaigndetail/CampaignDetailView"
 
 function App() {
   return (
-    <div className="text-3xl text-blue-500">Initializing</div>
+    <div>
+      <Routes>
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/campaign/:id" element={<CampaignDetailPage />} />
+      </Routes>
+    </div>
   )
 }
 
